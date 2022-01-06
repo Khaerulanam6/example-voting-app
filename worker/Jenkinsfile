@@ -41,3 +41,16 @@ true
     }
   }
 }
+
+  post{
+    always{
+      echo 'the job is complete'
+    }
+      failure {
+          slackSend (channel: "jenkins-cicd", message: "Build Failed On Docker Agent - ANAM - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+      }
+      success {
+          slackSend (channel: "jenkins-cicd", message: "Build Succeeded On Docker Agent -ANAM - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+      }
+  }
+}
