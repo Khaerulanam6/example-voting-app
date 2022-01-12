@@ -1,0 +1,63 @@
+pipeline{
+  agent{
+    docker{
+      image 'python:3.7.2'
+      args '-u root:sudo -v $HOME/workspace/instavote_vote_vote_Jenkinsfile:/instavote_vote_vote_Jenkinsfile'
+    }
+  }
+  stages{
+    stage('prequisite'){
+      steps{
+        echo 'check requirement'
+        dir('vote'){
+          sh 'pip --version'
+      }
+    }
+  }
+
+    stage('build'){
+      steps{
+        echo 'build stages'
+        dir('vote'){
+          sh 'pip install -r requirements.txt'
+      }
+    }
+  }
+
+    stage('test'){
+      steps{
+        echo 'test unit'
+//         dir('vote'){
+//           sh 'python app.py'
+//       }
+    }
+  }
+    
+    stage('docker-package'){
+        agent any
+        steps{
+            echo 'Packaging worker app with docker'
+            script{
+                docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
+                    def workerImage = docker.build("khaerulanam/worker:v${env.BUILD_ID}", "./vote")
+                    workerImage.push()
+                    workerImage.push("latest")
+                }
+            }
+        }
+    }
+
+}
+    post{
+      always {
+        echo 'Building multibranch pipeline for worker is completed..'
+      }
+      failure {
+          slackSend (channel: "jenkins-cicd", message: "Build Failed Quiz 7.1 (2) by medival - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+      }
+      success {
+          slackSend (channel: "jenkins-cicd", message: "Build Succeeded Quiz 7.1 (2) by medival - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+      }
+    }
+
+  }
