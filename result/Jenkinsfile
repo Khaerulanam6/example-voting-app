@@ -1,25 +1,32 @@
 pipeline {
   agent any
 
+  tools{
+    nodejs 'Node Js 8.9.0'
+  }
+  
   stages{
-    stage("cd result"){
-      steps{
-          echo 'cd result'
-          sh 'cd result'
-      }
-    }
-    
     stage("npm install"){
+      when{
+          changeset "**/result/**"
+      }
       steps{
           echo 'Compiling result app'
-          sh '/usr/bin/npm install'
+          dir('result'){
+            sh 'npm install'
+          }
       }
     }
 
     stage("test"){
+      when{
+          changeset "**/result/**"
+      }
       steps{
         echo 'Running Unit Tets on result app'
-        sh 'npm test'
+        dir('result'){
+            sh 'npm test'
+        }
       }
     }
   }
@@ -29,10 +36,10 @@ pipeline {
         echo 'Building multibranch pipeline for result is completed..'
       }
       failure {
-          slackSend (channel: "jenkins-cicd", message: "Build Failed - ANAM - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+          slackSend (channel: "jenkins-cicd", message: "Build Failed - Ilham - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
       }
       success {
-          slackSend (channel: "jenkins-cicd", message: "Build Succeeded - ANAM - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+          slackSend (channel: "jenkins-cicd", message: "Build Succeeded - Ilham - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
       }
     }
   }
