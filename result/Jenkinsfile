@@ -2,21 +2,24 @@ pipeline {
   agent any
 
   stages{
+    stage("cd result"){
+      steps{
+          echo 'cd result'
+            sh 'cd result'
+      }
+    }
+    
     stage("npm install"){
       steps{
           echo 'Compiling result app'
-          dir('result'){
             sh 'npm install'
-          }
       }
     }
 
     stage("test"){
       steps{
         echo 'Running Unit Tets on result app'
-        dir('result'){
             sh 'npm test'
-        }
       }
     }
   }
