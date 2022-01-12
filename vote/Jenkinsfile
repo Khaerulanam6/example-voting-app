@@ -2,7 +2,7 @@ pipeline{
   agent{
     docker{
       image 'python:3.7.2'
-      args '-u root:sudo -v $HOME/workspace/instavote_vote_vote_Jenkinsfile:/instavote_vote_vote_Jenkinsfile'
+//      args '-u root:sudo -v $HOME/workspace/instavote_vote_vote_Jenkinsfile:/instavote_vote_vote_Jenkinsfile'
     }
   }
   stages{
