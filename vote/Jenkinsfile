@@ -1,13 +1,41 @@
 pipeline{
-//  agent{
-//    docker{
-//      image 'python:3.7.2'
-//      args '-u root:sudo -v $HOME/workspace/instavote_vote_vote_Jenkinsfile:/instavote_vote_vote_Jenkinsfile'
-//    }
-//  }
   agent any
 
   stages{
+     stage('prequisite'){
+         agent{
+           docker{
+           image 'python:3.7.2'
+           args '-u root:sudo -v $HOME/workspace/instavote_vote_vote_Jenkinsfile:/instavote_vote_vote_Jenkinsfile'
+           }
+         }
+       steps{
+        echo 'check requirement'
+        dir('vote'){
+          sh 'pip --version'
+      }
+    }
+  }
+
+    stage('build'){
+      steps{
+        echo 'build stages'
+        dir('vote'){
+          sh 'pip install -r requirements.txt'
+      }
+    }
+  }
+
+    stage('test'){
+      steps{
+        echo 'test unit'
+//         dir('vote'){
+//           sh 'python app.py'
+//       }
+    }
+  }
+    
+
     stage('docker-package'){
         agent any
         steps{
