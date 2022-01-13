@@ -8,33 +8,6 @@ pipeline{
   agent any
 
   stages{
-    stage('prequisite'){
-      steps{
-        echo 'check requirement'
-        dir('vote'){
-          sh 'pip --version'
-      }
-    }
-  }
-
-    stage('build'){
-      steps{
-        echo 'build stages'
-        dir('vote'){
-          sh 'pip install -r requirements.txt'
-      }
-    }
-  }
-
-    stage('test'){
-      steps{
-        echo 'test unit'
-//         dir('vote'){
-//           sh 'python app.py'
-//       }
-    }
-  }
-    
     stage('docker-package'){
         agent any
         steps{
