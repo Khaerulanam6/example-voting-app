@@ -41,7 +41,7 @@ pipeline {
             echo 'Packaging worker app with docker'
             script{
                 docker.withRegistry('', 'dockerlogin') {
-                    def workerImage = docker.build("khaerulanam/result:v${env.BUILD_ID}", "./result")
+                    workerImage = docker.build("khaerulanam/result:v${env.BUILD_ID}", "./result")
                 }
             }
         }
