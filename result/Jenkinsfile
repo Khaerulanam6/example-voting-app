@@ -29,6 +29,36 @@ pipeline {
         }
       }
     }
+
+
+    stage('docker-build'){
+        agent any
+        steps{
+            echo 'Packaging worker app with docker'
+            script{
+                docker.withRegistry('', 'dockerlogin') {
+                    def workerImage = docker.build("khaerulanam/vote:v${env.BUILD_ID}", "./vote")
+                }
+            }
+        }
+    }
+
+    stage('docker-push'){
+        agent any
+        steps{
+            echo 'Packaging worker app with docker'
+            script{
+                docker.withRegistry('', 'dockerlogin') {
+                    workerImage.push()
+                    workerImage.push("latest")
+                }
+            }
+        }
+    }
+    
+
+
+
   }
 
   post{
