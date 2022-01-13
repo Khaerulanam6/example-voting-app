@@ -18,6 +18,13 @@ pipeline{
   }
 
     stage('build'){
+     stage('prequisite'){
+         agent{
+           docker{
+           image 'python:3.7.2'
+           args '-u root:sudo -v $HOME/workspace/instavote_vote_vote_Jenkinsfile:/instavote_vote_vote_Jenkinsfile'
+           }
+         }
       steps{
         echo 'build stages'
         dir('vote'){
@@ -27,6 +34,13 @@ pipeline{
   }
 
     stage('test'){
+     stage('prequisite'){
+         agent{
+           docker{
+           image 'python:3.7.2'
+           args '-u root:sudo -v $HOME/workspace/instavote_vote_vote_Jenkinsfile:/instavote_vote_vote_Jenkinsfile'
+           }
+         }
       steps{
         echo 'test unit'
 //         dir('vote'){
@@ -36,20 +50,32 @@ pipeline{
   }
     
 
-    stage('docker-package'){
+    stage('docker-build'){
         agent any
         steps{
             echo 'Packaging worker app with docker'
             script{
                 docker.withRegistry('', 'dockerlogin') {
                     def workerImage = docker.build("khaerulanam/vote:v${env.BUILD_ID}", "./vote")
+                }
+            }
+        }
+    }
+
+    stage('docker-push'){
+        agent any
+        steps{
+            echo 'Packaging worker app with docker'
+            script{
+                docker.withRegistry('', 'dockerlogin') {
                     workerImage.push()
                     workerImage.push("latest")
                 }
             }
         }
     }
-
+      
+      
 }
     post{
       always {
