@@ -1,13 +1,20 @@
 pipeline{
-  agent{
-    docker{
-      image 'python:3.7.2'
-      args '-u root:sudo -v $HOME/workspace/instavote_vote_vote_Jenkinsfile:/instavote_vote_vote_Jenkinsfile'
-    }
-  }
+agent any
+environment {
+//  imagename = "khaerulanam/vote"
+//  registryCredential = 'dockerlogin'
+  workerImage = ''
+ }
+  
   stages{
-    stage('prequisite'){
-      steps{
+     stage('prequisite'){
+         agent{
+           docker{
+           image 'python:3.7.2'
+           args '-u root:sudo -v $HOME/workspace/instavote_vote_vote_Jenkinsfile:/instavote_vote_vote_Jenkinsfile'
+           }
+         }
+       steps{
         echo 'check requirement'
         dir('vote'){
           sh 'pip --version'
@@ -16,6 +23,12 @@ pipeline{
   }
 
     stage('build'){
+         agent{
+           docker{
+           image 'python:3.7.2'
+           args '-u root:sudo -v $HOME/workspace/instavote_vote_vote_Jenkinsfile:/instavote_vote_vote_Jenkinsfile'
+           }
+         }
       steps{
         echo 'build stages'
         dir('vote'){
@@ -25,6 +38,12 @@ pipeline{
   }
 
     stage('test'){
+         agent{
+           docker{
+           image 'python:3.7.2'
+           args '-u root:sudo -v $HOME/workspace/instavote_vote_vote_Jenkinsfile:/instavote_vote_vote_Jenkinsfile'
+           }
+         }
       steps{
         echo 'test unit'
 //         dir('vote'){
@@ -34,16 +53,53 @@ pipeline{
   }
  
     
+<<<<<<< HEAD
+=======
+
+    stage('docker-build'){
+        agent any
+        steps{
+            echo 'Packaging worker app with docker'
+            script{
+                docker.withRegistry('', 'dockerlogin') {
+                    workerImage = docker.build("khaerulanam/vote:v${env.BUILD_ID}", "./vote")
+                }
+            }
+        }
+    }
+
+    stage('docker-push'){
+        agent any
+        steps{
+            echo 'Packaging worker app with docker'
+            script{
+                docker.withRegistry('', 'dockerlogin') {
+                    workerImage.push()
+                    workerImage.push("latest")
+                }
+            }
+        }
+    }
+      
+      
+>>>>>>> 6a351fe0bbf38defa72edbfbfd55b24d36a1eede
 }
     post{
       always {
         echo 'Building multibranch pipeline for worker is completed..'
       }
       failure {
+<<<<<<< HEAD
           slackSend (channel: "jenkins-cicd", message: "Build Failed Quiz 7.1 (2) by ANAM - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
       }
       success {
           slackSend (channel: "jenkins-cicd", message: "Build Succeeded Quiz 7.1 (2) by ANAM - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+=======
+          slackSend (channel: "jenkins-cicd", message: "Build Failed Quiz 8.1 (2) by ANAM - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+      }
+      success {
+          slackSend (channel: "jenkins-cicd", message: "Build Succeeded Quiz 8.1 (2) by ANAM - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+>>>>>>> 6a351fe0bbf38defa72edbfbfd55b24d36a1eede
       }
     }
 
