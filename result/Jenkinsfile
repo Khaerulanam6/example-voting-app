@@ -1,6 +1,10 @@
 pipeline {
   agent any
-
+  environment {
+  //  imagename = "khaerulanam/vote"
+  //  registryCredential = 'dockerlogin'
+      workerImage = ''
+   }
   tools{
     nodejs 'Nodejs 8.9.0'
   }
