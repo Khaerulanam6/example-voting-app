@@ -7,6 +7,7 @@ pipeline{
   }
   stages{
 <<<<<<< HEAD
+<<<<<<< HEAD
     stage('build'){
       steps{
         echo 'building worker app'
@@ -37,6 +38,13 @@ pipeline{
           changeset "**/worker/**"
       }
       steps{
+=======
+    stage("build"){
+      when{
+          changeset "**/worker/**"
+      }
+      steps{
+>>>>>>> 22de44a0171d0b220643706258d6704d9a888724
           echo 'Compiling worker app'
           dir('worker'){
             sh 'mvn compile'
@@ -64,7 +72,10 @@ pipeline{
         dir('worker'){
             sh 'mvn package -DskipTests'
         }
+<<<<<<< HEAD
 >>>>>>> e7415dd73bcdb5d7cd983e32440a352114a44237
+=======
+>>>>>>> 22de44a0171d0b220643706258d6704d9a888724
       }
     }
     
@@ -84,6 +95,7 @@ pipeline{
     
     
   }
+<<<<<<< HEAD
 <<<<<<< HEAD
 }
   post{
@@ -111,5 +123,20 @@ pipeline{
     }
 
 >>>>>>> e7415dd73bcdb5d7cd983e32440a352114a44237
+=======
+
+  post{
+      always {
+        echo 'Building multibranch pipeline for worker is completed..'
+      }
+      failure {
+          slackSend (channel: "jenkins-cicd", message: "Jenkins anam - Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+      }
+      success {
+          slackSend (channel: "jenkins-cicd", message: "Jenkins anam - Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+      }
+    }
+
+>>>>>>> 22de44a0171d0b220643706258d6704d9a888724
   }
 }
