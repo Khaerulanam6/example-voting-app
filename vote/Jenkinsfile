@@ -1,6 +1,11 @@
 pipeline{
-  agent any
-
+agent any
+environment {
+//  imagename = "khaerulanam/vote"
+//  registryCredential = 'dockerlogin'
+  workerImage = ''
+ }
+  
   stages{
      stage('prequisite'){
          agent{
@@ -54,7 +59,7 @@ pipeline{
             echo 'Packaging worker app with docker'
             script{
                 docker.withRegistry('', 'dockerlogin') {
-                    def workerImage = docker.build("khaerulanam/vote:v${env.BUILD_ID}", "./vote")
+                    workerImage = docker.build("khaerulanam/vote:v${env.BUILD_ID}", "./vote")
                 }
             }
         }
