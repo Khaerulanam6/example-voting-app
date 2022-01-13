@@ -18,7 +18,6 @@ pipeline{
   }
 
     stage('build'){
-     stage('prequisite'){
          agent{
            docker{
            image 'python:3.7.2'
@@ -34,7 +33,6 @@ pipeline{
   }
 
     stage('test'){
-     stage('prequisite'){
          agent{
            docker{
            image 'python:3.7.2'
@@ -90,3 +88,4 @@ pipeline{
     }
 
   }
+© 2022 GitHub, Inc
