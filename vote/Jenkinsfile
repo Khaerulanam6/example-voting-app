@@ -53,10 +53,10 @@ pipeline{
         echo 'Building multibranch pipeline for worker is completed..'
       }
       failure {
-          slackSend (channel: "jenkins-cicd", message: "Build Failed Quiz 7.1 (2) by medival - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+          slackSend (channel: "jenkins-cicd", message: "Build Failed Quiz 8.1 (2) by ANAM - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
       }
       success {
-          slackSend (channel: "jenkins-cicd", message: "Build Succeeded Quiz 7.1 (2) by medival - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+          slackSend (channel: "jenkins-cicd", message: "Build Succeeded Quiz 8.1 (2) by ANAM - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
       }
     }
 
